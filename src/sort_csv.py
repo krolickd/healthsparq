@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import pandas as pd
 from sys import argv
 from os import path
@@ -27,22 +28,23 @@ if __name__ == '__main__':
     #check for correct number of args
     num_args = len(argv)
     if num_args < 2:
-        print("Please include column heading to sort by as first argument")
+        sort_column = input("Please enter heading column to sort: ")
     else:
-        in_file = 'input.csv'
         sort_column = argv[1]
+    
+    in_file = 'input.csv'
+    
 
+    if not path.isfile('input.csv'):
+        print('File input.csv is required for input')
+    else:
+        data = read_csv(in_file)
 
-        if not path.isfile('input.csv'):
-            print('File input.csv is required for input')
+        if sort_column not in data.head():
+            print("Please enter a column heading in the dataset")
         else:
-            data = read_csv(in_file)
 
-            if sort_column not in data.head():
-                print("Please enter a column heading in the dataset")
-            else:
+            sorted_data = sort_data(data, sort_column, False)
 
-                sorted_data = sort_data(data, sort_column, False)
-
-                if write_csv(sorted_data):
-                    print('Error wrtiting file')
+            if write_csv(sorted_data):
+                print('Error wrtiting file')
